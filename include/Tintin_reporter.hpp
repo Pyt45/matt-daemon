@@ -31,6 +31,8 @@ class Tintin_reporter {
         std::string getLevel(t_level level);
         std::string getMessagePrefix(t_tag tag, std::string msg);
         std::string getTimeStamp();
+        Tintin_reporter(const Tintin_reporter& src);
+        Tintin_reporter& operator=(const Tintin_reporter& src);
         ~Tintin_reporter();
         static Tintin_reporter& getLogger();
         void log(t_tag tag, t_level level, std::string message);

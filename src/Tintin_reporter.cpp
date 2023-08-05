@@ -14,6 +14,16 @@ std::string Tintin_reporter::getLevel(t_level level) {
     return (level == LOG ? "LOG" : level == INFO ? "INFO" : "ERROR");
 }
 
+Tintin_reporter::Tintin_reporter(const Tintin_reporter& src) {
+    *this = src;
+}
+
+Tintin_reporter& Tintin_reporter::operator=(const Tintin_reporter& src) {
+    if (this != &src) {
+    }
+    return *this;
+}
+
 std::string Tintin_reporter::getMessagePrefix(t_tag tag, std::string msg) {
     std::string prefix;
     if (tag == STARTED)

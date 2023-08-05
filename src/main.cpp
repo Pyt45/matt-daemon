@@ -8,6 +8,7 @@ bool terminate = false;
 int sig_arr[] = { SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGBUS, SIGFPE, SIGKILL, SIGUSR1, SIGSEGV, SIGUSR2, SIGPIPE, SIGALRM, SIGTERM, SIGCHLD, SIGCONT, SIGSTOP, SIGTSTP, SIGTTIN, SIGTTOU, SIGURG, SIGXCPU, SIGXFSZ, SIGVTALRM, SIGPROF, SIGWINCH, SIGIO, SIGSYS };
 
 void signal_handler(int sig) {
+    (void)sig;
     logger.log(SIGNAL, INFO, "");
     terminate = true;
 }
@@ -20,7 +21,7 @@ int main() {
         std::cerr << "Error need root priviliges\n";
         exit(1);
     }
-    for (int i = 0; i < sizeof(sig_arr)/sizeof(sig_arr[0]); i++)
+    for (size_t i = 0; i < sizeof(sig_arr)/sizeof(sig_arr[0]); i++)
         signal(sig_arr[i], signal_handler);
     Lock_file locker = Lock_file::getInstance();
     int fd_lock = locker.lock_file();

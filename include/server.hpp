@@ -11,7 +11,10 @@ class Server {
         Server(int port);
         ~Server();
         void run(bool *terminated);
+        Server();
+        Server(const Server& rhs);
 
+        Server& operator=(const Server& rhs);
     private:
         int _port;
         int _serverFd;

@@ -1,7 +1,7 @@
 NAME := Matt_daemon
 
 CC := clang++
-FLAGS := -std=c++17 #-Wall -Wextra -Werror
+FLAGS := -std=c++17 -Wall -Wextra -Werror
 OBJDIR := obj/
 SRCDIR := src/
 SRC := main.cpp Lock_file.cpp Tintin_reporter.cpp Matt_daemon.cpp server.cpp

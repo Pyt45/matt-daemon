@@ -10,6 +10,8 @@ class Lock_file {
         Tintin_reporter& logger;
     public:
         ~Lock_file();
+        Lock_file(const Lock_file& src);
+        Lock_file& operator=(const Lock_file& src);
         int lock_file();
         void realease_file();
         static Lock_file& getInstance();

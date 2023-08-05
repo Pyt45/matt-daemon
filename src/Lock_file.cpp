@@ -10,6 +10,17 @@ Lock_file& Lock_file::getInstance() {
     return *instance;
 }
 
+Lock_file::Lock_file(const Lock_file& src): logger(src.logger) {
+    *this = src;
+}
+
+Lock_file& Lock_file::operator=(const Lock_file& src) {
+    if (this != &src) {
+        this->lock_fd = src.lock_fd;
+    }
+    return *this;
+}
+
 int Lock_file::lock_file() {
     lock_fd = open(LOCK_FILE, O_RDWR | O_CREAT, 0644);
     if (lock_fd < 0) {

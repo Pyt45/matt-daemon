@@ -47,7 +47,6 @@ void Server::run(bool *terminated) {
     std::vector<struct pollfd> newSocks;
     std::set<int> toRemove;
 
-    int iter = 0;
 
     bool exit = false;
 
@@ -58,7 +57,7 @@ void Server::run(bool *terminated) {
             if (n == 0)
                 continue;
             else if (n == -1) {
-                Tintin_reporter::getLogger().log(ERR_SERVER, ERROR, "error poll");
+                *terminated = true;
             }
             for (size_t i = 0; i < this->_polls.size(); i++) {
                 if (i == 0) {
@@ -66,6 +65,7 @@ void Server::run(bool *terminated) {
                         int fd = this->acceptSocket();
                     
                         if (fd > 0 && this->_polls.size() == 4) {
+                            Tintin_reporter::getLogger().log(ERR_SERVER, ERROR, "server can't accept this connection");
                             close(fd);
                         } else if (fd > 0) {
                             this->_polls[i].events = POLLIN;
@@ -101,7 +101,6 @@ void Server::run(bool *terminated) {
                         }
                     }
                 } else if (this->_polls[i].revents & POLLHUP) {
-                    Tintin_reporter::getLogger().log(ERR_SERVER, ERROR, "pollhup");
                     toRemove.insert(this->_polls[i].fd);
                 }
             }
@@ -140,7 +139,6 @@ int Server::bindSocket() const {
     address.sin_family = AF_INET;
     address.sin_port = htons(this->_port);
     address.sin_addr.s_addr = INADDR_ANY;
-    int addrlen = sizeof(address);
 
     return bind(this->_serverFd, (struct sockaddr*)&address,
              sizeof(address));
@@ -154,4 +152,17 @@ int Server::acceptSocket() const {
 
 int Server::listenSocket() const {
     return listen(this->_serverFd, 5);
+}
+
+Server::Server() {}
+
+Server::Server(const Server& rhs) {
+    *this = rhs;
+}
+
+Server& Server::operator=(const Server& rhs) {
+    if (this != &rhs) {
+        this->_port = rhs._port;
+    }
+    return *this;
 }
