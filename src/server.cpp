@@ -13,6 +13,12 @@ Server::~Server() {
     if (this->_serverFd != -1) {
         close(this->_serverFd);
     }
+
+    for (size_t i = 0; i < this->_polls.size(); i++) {
+        if (this->_polls[i].fd != -1) {
+            close(this->_polls[i].fd);
+        }
+    }
 }
 
 void Server::run(bool *terminated) {
