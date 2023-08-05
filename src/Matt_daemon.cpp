@@ -15,10 +15,6 @@ void Daemon::check_pid() {
 }
 
 int Daemon::start_daemon() {
-    if (geteuid()) {
-        std::cerr << "Error need root priviliges\n";
-        exit(1);
-    }
     process_id = fork();
 
     check_pid();

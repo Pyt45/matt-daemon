@@ -11,7 +11,7 @@ Tintin_reporter& Tintin_reporter::getLogger() {
 }
 
 std::string Tintin_reporter::getLevel(t_level level) {
-    return (level == LOG ? "log" : level == INFO ? "info" : "error");
+    return (level == LOG ? "LOG" : level == INFO ? "INFO" : "ERROR");
 }
 
 std::string Tintin_reporter::getMessagePrefix(t_tag tag, std::string msg) {
@@ -53,20 +53,16 @@ std::string Tintin_reporter::getTimeStamp() {
 }
 
 void Tintin_reporter::log(t_tag tag, t_level level, std::string message) {
-    // check if log file exists if not create it
+
     const std::filesystem::path fs_path{LOG_DIR};
     if (std::filesystem::exists(fs_path) == false)
         std::filesystem::create_directory(fs_path);
-    // if (std::filesystem::exists(LOG_DIR) == false)
-    //     throw std::runtime_error("Could not create the directory /var/log/matt_daemon.");
     std::ofstream logfile(LOG_FILE, std::ios_base::app);
     if (logfile.is_open())
     {
         logfile << format(getTimeStamp(), getLevel(level), getMessagePrefix(tag, message));
         logfile.close();
     }
-    // else
-    //     throw std::runtime_error("Could not create the file matt_daemon.log.");
 }
 
 Tintin_reporter::~Tintin_reporter() {

@@ -10,12 +10,8 @@ Server::Server(int port): _port(port) {
 }
 
 Server::~Server() {
-    if (this->_serverFd != -1) {
-        close(this->_serverFd);
-    }
-
     for (size_t i = 0; i < this->_polls.size(); i++) {
-        if (this->_polls[i].fd != -1) {
+        if (this->_polls[i].fd > 0) {
             close(this->_polls[i].fd);
         }
     }
@@ -62,7 +58,7 @@ void Server::run(bool *terminated) {
             if (n == 0)
                 continue;
             else if (n == -1) {
-                std::cerr << "Error: poll failed" << std::endl;
+                Tintin_reporter::getLogger().log(ERR_SERVER, ERROR, "error poll");
             }
             for (size_t i = 0; i < this->_polls.size(); i++) {
                 if (i == 0) {
@@ -72,11 +68,10 @@ void Server::run(bool *terminated) {
                         if (fd > 0 && this->_polls.size() == 4) {
                             close(fd);
                         } else if (fd > 0) {
-                            std::cout << "Got a new connection" << std::endl;
                             this->_polls[i].events = POLLIN;
                             newSocks.push_back((struct pollfd){fd, POLLIN, 0});
                         } else {
-                            std::cout << "Error occured while accepting a connection" << std::endl;
+                            Tintin_reporter::getLogger().log(ERR_SERVER, ERROR, "failed to accept socket");
                         }
                     }
                 } else if (this->_polls[i].revents & POLLIN) {
@@ -106,7 +101,7 @@ void Server::run(bool *terminated) {
                         }
                     }
                 } else if (this->_polls[i].revents & POLLHUP) {
-                    std::cerr << "Error: pollhup will remove the socket from the poll" << std::endl;
+                    Tintin_reporter::getLogger().log(ERR_SERVER, ERROR, "pollhup");
                     toRemove.insert(this->_polls[i].fd);
                 }
             }
