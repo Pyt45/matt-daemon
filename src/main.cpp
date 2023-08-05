@@ -1,4 +1,5 @@
 #include "../include/Matt_daemon.hpp"
+#include "../include/server.hpp"
 // #include "../include/Lock_file.hpp"
 // #include "../include/Tintin_reporter.hpp"
 
@@ -60,9 +61,10 @@ int main() {
     logger.log(DAEMON_MODE, INFO, "");
     logger.log(PID, INFO, std::to_string(p));
     logger.log(STARTED, INFO, "");
-    while (!terminate) {
-        // handle server
-    }
-    locker.realease_file()
+    
+    Server s(PORT);
+    s.run(&terminate);
+
+    locker.realease_file();
     logger.log(QUIT, INFO, "");
 }

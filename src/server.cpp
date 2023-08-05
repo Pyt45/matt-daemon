@@ -1,4 +1,4 @@
-#include "server.hpp"
+#include "../include/server.hpp"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -15,7 +15,7 @@ Server::~Server() {
     }
 }
 
-void Server::run() {
+void Server::run(bool *terminated) {
     int serverFd = this->createSocket();
 
     if (serverFd < 0) {
@@ -50,7 +50,7 @@ void Server::run() {
     bool exit = false;
 
 
-    while (!exit && !this->_terminated) {
+    while (!exit && !*terminated) {
             int n = poll(&this->_polls[0], this->_polls.size(), 10000);
 
             if (n == 0)
@@ -88,11 +88,14 @@ void Server::run() {
 
                         char *token = strtok(buffer, "\n\r");
                         while( token != NULL ) {
-                            std::cout << token << std::endl;
                             if (strcmp(token, "quit") == 0) {
                                 exit = true;
+                                *terminated = true;
+                                Tintin_reporter::getLogger().log(REQUEST_QUIT, INFO, "");
                                 break;
                             }
+
+                            Tintin_reporter::getLogger().log(USER_INPUT, INFO, token);
                             token = strtok(NULL, "\n\r");
                         }
                     }
@@ -150,8 +153,4 @@ int Server::acceptSocket() const {
 
 int Server::listenSocket() const {
     return listen(this->_serverFd, 5);
-}
-
-void Server::setTerminated(bool terminated) {
-    this->_terminated = terminated;
 }

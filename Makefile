@@ -4,7 +4,7 @@ CC := clang++
 FLAGS := -std=c++17 #-Wall -Wextra -Werror
 OBJDIR := obj/
 SRCDIR := src/
-SRC := main.cpp Lock_file.cpp Tintin_reporter.cpp Matt_daemon.cpp
+SRC := main.cpp Lock_file.cpp Tintin_reporter.cpp Matt_daemon.cpp server.cpp
 OBJ := $(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 INCLUDE := include
 

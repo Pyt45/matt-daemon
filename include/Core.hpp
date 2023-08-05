@@ -16,6 +16,8 @@
 #include <time.h>
 #include <stdexcept>
 
+# define PORT 4242
+
 #define format(date, level, message) "[" + date + "]" + " [ " + level + " ] - Matt_daemon: " + message
 
 #ifdef __aarch64__

@@ -3,19 +3,19 @@
 # include <iostream>
 # include <poll.h>
 #include <vector>
+#include "Tintin_reporter.hpp"
+#include <cstring>
 
 class Server {
     public:
         Server(int port);
         ~Server();
-        void run();
-        void setTerminated(bool terminated);
+        void run(bool *terminated);
 
     private:
         int _port;
         int _serverFd;
         std::vector<struct pollfd> _polls;
-        bool _terminated;
 
         int createSocket() const;
         int setOptions() const;
