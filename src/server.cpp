@@ -56,7 +56,7 @@ void Server::run() {
             if (n == 0)
                 continue;
             else if (n == -1) {
-                std::cout << "FAILURE" << std::endl;
+                std::cerr << "Error: poll failed" << std::endl;
             }
             for (size_t i = 0; i < this->_polls.size(); i++) {
                 if (i == 0) {
@@ -96,6 +96,9 @@ void Server::run() {
                             token = strtok(NULL, "\n\r");
                         }
                     }
+                } else if (this->_polls[i].revents & POLLHUP) {
+                    std::cerr << "Error: pollhup will remove the socket from the poll" << std::endl;
+                    toRemove.insert(this->_polls[i].fd);
                 }
             }
 
@@ -114,6 +117,7 @@ void Server::run() {
             }
             
             newSocks.clear();
+            toRemove.clear();
     }
 }
 
