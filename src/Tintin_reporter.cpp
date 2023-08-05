@@ -34,9 +34,9 @@ std::string Tintin_reporter::getMessagePrefix(t_tag tag, std::string msg) {
         prefix = "Error file unlocked.";
     else if (tag == USER_INPUT)
         prefix = "User input: " + msg;
-    else if (tag == QUIT)
-        prefix = "Request quit.";
     else if (tag == REQUEST_QUIT)
+        prefix = "Request quit.";
+    else if (tag == QUIT)
         prefix = "Quitting.";
     return prefix + "\n";
 }

@@ -1,15 +1,15 @@
 #include "../include/Matt_daemon.hpp"
-#include "../include/Lock_file.hpp"
-#include "../include/Tintin_reporter.hpp"
+// #include "../include/Lock_file.hpp"
+// #include "../include/Tintin_reporter.hpp"
 
 Tintin_reporter& logger = Tintin_reporter::getLogger();
 bool terminate = false;
 
 int sig_arr[] = { SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGBUS, SIGFPE, SIGKILL, SIGUSR1, SIGSEGV, SIGUSR2, SIGPIPE, SIGALRM, SIGTERM, SIGCHLD, SIGCONT, SIGSTOP, SIGTSTP, SIGTTIN, SIGTTOU, SIGURG, SIGXCPU, SIGXFSZ, SIGVTALRM, SIGPROF, SIGWINCH, SIGIO, SIGSYS };
-
+// int sig_arr[] = { SIGTERM, SIGINT, SIGQUIT, SIGKILL, SIGHUP };
 void signal_handler(int sig) {
+    std::cout << "terminated\n";
     logger.log(SIGNAL, INFO, "");
-    logger.log(QUIT, INFO, "");
     terminate = true;
 }
 
@@ -40,24 +40,29 @@ void signal_handler(int sig) {
 
 int main() {
     Daemon daemon;
-    logger.log(STARTED, INFO, "");
-    logger.log(CREATE_SERVER, INFO, "");
-    logger.log(SERVER, INFO, "");
+    for (int i = 0; i < sizeof(sig_arr)/sizeof(sig_arr[0]); i++)
+        signal(sig_arr[i], signal_handler);
     Lock_file locker = Lock_file::getInstance();
     int fd_lock = locker.lock_file();
     if (fd_lock < 0) {
+        // terminate = true;
+        std::cerr << "Can't open: /var/lock/matt_daemon.lock\n";
+        locker.realease_file();
         logger.log(QUIT, INFO, "");
         exit(1);
     }
+    logger.log(STARTED, INFO, "");
+    logger.log(CREATE_SERVER, INFO, "");
+    logger.log(SERVER, INFO, "");
+
 
     int p = daemon.start_daemon();
     logger.log(DAEMON_MODE, INFO, "");
     logger.log(PID, INFO, std::to_string(p));
-    for (int i = 0; i < sizeof(sig_arr)/sizeof(sig_arr[0]); i++)
-        signal(sig_arr[i], signal_handler);
     logger.log(STARTED, INFO, "");
     while (!terminate) {
         // handle server
     }
+    locker.realease_file()
     logger.log(QUIT, INFO, "");
 }

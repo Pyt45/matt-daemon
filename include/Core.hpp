@@ -1,7 +1,9 @@
 #pragma once
 
+#include <sys/file.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <filesystem>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -13,7 +15,6 @@
 #include <signal.h>
 #include <time.h>
 #include <stdexcept>
-
 
 #define format(date, level, message) "[" + date + "]" + " [ " + level + " ] - Matt_daemon: " + message
 
