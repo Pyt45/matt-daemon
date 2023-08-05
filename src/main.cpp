@@ -9,7 +9,6 @@ bool terminate = false;
 int sig_arr[] = { SIGHUP, SIGINT, SIGQUIT, SIGILL, SIGTRAP, SIGABRT, SIGBUS, SIGFPE, SIGKILL, SIGUSR1, SIGSEGV, SIGUSR2, SIGPIPE, SIGALRM, SIGTERM, SIGCHLD, SIGCONT, SIGSTOP, SIGTSTP, SIGTTIN, SIGTTOU, SIGURG, SIGXCPU, SIGXFSZ, SIGVTALRM, SIGPROF, SIGWINCH, SIGIO, SIGSYS };
 // int sig_arr[] = { SIGTERM, SIGINT, SIGQUIT, SIGKILL, SIGHUP };
 void signal_handler(int sig) {
-    std::cout << "terminated\n";
     logger.log(SIGNAL, INFO, "");
     terminate = true;
 }
@@ -67,4 +66,5 @@ int main() {
 
     locker.realease_file();
     logger.log(QUIT, INFO, "");
+    close(fd_lock);
 }

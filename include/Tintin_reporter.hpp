@@ -20,6 +20,7 @@ typedef enum s_tag {
     USER_INPUT,
     QUIT,
     REQUEST_QUIT,
+    ERR_SERVER,
 }           t_tag;
 
 class Tintin_reporter {

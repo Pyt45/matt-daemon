@@ -27,9 +27,10 @@ void Lock_file::realease_file() {
     if (flock(lock_fd, LOCK_UN) == -1) {
         logger.log(ERR_UNLOCKFILE, ERROR, "");
     }
+    
     std::filesystem::path filepath{LOCK_FILE};
-
-    std::filesystem::remove(filepath);
+    if (std::filesystem::exists(filepath))
+        std::filesystem::remove(filepath);
 }
 
 Lock_file::~Lock_file() {

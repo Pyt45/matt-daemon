@@ -38,6 +38,8 @@ std::string Tintin_reporter::getMessagePrefix(t_tag tag, std::string msg) {
         prefix = "Request quit.";
     else if (tag == QUIT)
         prefix = "Quitting.";
+    else if (tag == ERR_SERVER)
+        prefix = "Error server: " + msg;
     return prefix + "\n";
 }
 
