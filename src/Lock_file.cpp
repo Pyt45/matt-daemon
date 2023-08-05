@@ -11,7 +11,7 @@ Lock_file& Lock_file::getInstance() {
 }
 
 int Lock_file::lock_file() {
-    lock_fd = open(LOCK_FILE, O_RDWR | O_CREAT, 0640);
+    lock_fd = open(LOCK_FILE, O_RDWR | O_CREAT, 0644);
     if (lock_fd < 0) {
         logger.log(ERR_LOCKFILE, ERROR, "");
         return -1;
