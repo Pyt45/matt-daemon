@@ -50,7 +50,7 @@ void Server::run() {
     bool exit = false;
 
 
-    while (!exit) {
+    while (!exit && !this->_terminated) {
             int n = poll(&this->_polls[0], this->_polls.size(), 10000);
 
             if (n == 0)
@@ -89,7 +89,7 @@ void Server::run() {
                         char *token = strtok(buffer, "\n\r");
                         while( token != NULL ) {
                             std::cout << token << std::endl;
-                            if (strcmp(token, "exit") == 0) {
+                            if (strcmp(token, "quit") == 0) {
                                 exit = true;
                                 break;
                             }
@@ -150,4 +150,8 @@ int Server::acceptSocket() const {
 
 int Server::listenSocket() const {
     return listen(this->_serverFd, 5);
+}
+
+void Server::setTerminated(bool terminated) {
+    this->_terminated = terminated;
 }
