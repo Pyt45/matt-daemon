@@ -24,7 +24,7 @@ Lock_file& Lock_file::operator=(const Lock_file& src) {
 int Lock_file::lock_file() {
     lock_fd = open(LOCK_FILE, O_RDWR | O_CREAT, 0644);
     if (lock_fd < 0) {
-        logger.log(ERR_LOCKFILE, ERROR, "");
+        logger.log(ERR_OPENFILE, ERROR, "");
         return -1;
     }
     if (flock(lock_fd, LOCK_EX | LOCK_NB) == -1) {

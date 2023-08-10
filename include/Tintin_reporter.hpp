@@ -21,8 +21,9 @@ typedef enum s_tag {
     QUIT,
     REQUEST_QUIT,
     ERR_SERVER,
+    ERR_OPENFILE, 
 }           t_tag;
-
+ 
 class Tintin_reporter {
     private:
         Tintin_reporter();

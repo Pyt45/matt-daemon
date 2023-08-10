@@ -6,14 +6,14 @@ OBJDIR := obj/
 SRCDIR := src/
 SRC := main.cpp Lock_file.cpp Tintin_reporter.cpp Matt_daemon.cpp server.cpp
 OBJ := $(addprefix $(OBJDIR), $(SRC:.cpp=.o))
-INCLUDE := include
+INCLUDE := include/${wildcard *.hpp}
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(INCLUDE)
+$(NAME): $(OBJ)
 	@$(CC) $(FLAGS) -o $(NAME) $(OBJ)
 
-$(OBJ): $(OBJDIR)%.o : $(SRCDIR)%.cpp
+$(OBJ): $(OBJDIR)%.o : $(SRCDIR)%.cpp $(INCLUDE)
 	@mkdir -p $(OBJDIR)
 	@$(CC) $(FLAGS) -I$(INCLUDE) -o $@ -c $<
 

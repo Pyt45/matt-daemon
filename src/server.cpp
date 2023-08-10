@@ -96,7 +96,7 @@ void Server::run(bool *terminated) {
                                 break;
                             }
 
-                            Tintin_reporter::getLogger().log(USER_INPUT, INFO, token);
+                            Tintin_reporter::getLogger().log(USER_INPUT, LOG, token);
                             token = strtok(NULL, "\n\r");
                         }
                     }
