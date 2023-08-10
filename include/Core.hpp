@@ -21,9 +21,9 @@
 #define format(date, level, message) "[" + date + "]" + " [ " + level + " ] - Matt_daemon: " + message
 
 #ifdef __aarch64__
-    #define LOCK_FILE "/Users/ayoubaqlzim/matt_daemon.lock"
-    #define LOG_DIR "/Users/ayoubaqlzim/matt_daemon"
-    #define LOG_FILE "/Users/ayoubaqlzim/matt_daemon/matt_daemon.log"
+    #define LOCK_FILE "/home/matt_daemon.lock"
+    #define LOG_DIR "/home/matt_daemon"
+    #define LOG_FILE "/home/matt_daemon/matt_daemon.log"
 #else
     #define LOCK_FILE "/var/lock/matt_daemon.lock"
     #define LOG_DIR "/var/log/matt_daemon"
